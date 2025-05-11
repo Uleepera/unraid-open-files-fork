@@ -15,16 +15,15 @@ The plugin adds a page to the **Tools** section in Unraid’s web UI. There, you
 
 ---
 
-## 📦 Installation
+### 🧩 Plugin Installation (via URL)
 
-*Note: This fork is not currently listed in Community Applications.*
+To install this plugin directly in Unraid:
 
-To install manually:
-1. Download or clone this repository.
-2. Copy the files to `/boot/config/plugins/open.files/` on your Unraid USB flash drive.
-3. Reboot your Unraid system or manually execute the plugin's init script if applicable.
-
-If you'd like to repackage this into a `.plg` installer, let me know!
+1. Go to the **Plugins** tab.
+2. Click **Install Plugin**.
+3. Paste the following URL into the install field:  
+   https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/open.files.plg
+4. Click **Install**.
 
 ---
 
