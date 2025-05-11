@@ -7,7 +7,7 @@
         category="System"
         support="https://github.com/Uleepera/unraid-open-files-fork"
         pluginURL="https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/open.files.plg"
-        icon="https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/icons/open_files.png">
+        icon="https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/icons/openfiles.png">
 
   <Description>
     Open Files plugin to diagnose shutdown issues due to open file handles on the Unraid array.
@@ -15,20 +15,20 @@
 
   <Changes>
     - Forked from original plugin by dlandon
-    - Added install.sh auto-deployment logic
+    - Packaged as a .txz for native Unraid installation
+    - Version 2025.05.11
   </Changes>
 
-  <File Name="/tmp/open.files.zip">
-    <URL>https://github.com/Uleepera/unraid-open-files-fork/archive/refs/heads/main.zip</URL>
-    <MD5></MD5>
+  <File Name="/boot/config/plugins/open.files/open.files-2025.05.11-x86_64-1.txz">
+    <URL>https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.11/open.files-2025.05.11-x86_64-1.txz</URL>
+    <MD5>d265a98ab3a376419d6f23af8f4e49a9</MD5>
   </File>
 
   <Install>
-    cd /tmp
-    unzip -o open.files.zip -d open.files.extracted
-    cd open.files.extracted/unraid-open-files-fork-main
-    chmod +x install.sh
-    ./install.sh
+    installpkg /boot/config/plugins/open.files/open.files-2025.05.11-x86_64-1.txz
   </Install>
 
+  <Uninstall>
+    removepkg open.files
+  </Uninstall>
 </PLUGIN>
