@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE PLUGIN [
+  <!ELEMENT PLUGIN (Author, Version, Description, PluginURL, Support, Category, MinVer, MaxVer, Files)>
+  <!ELEMENT Author (#PCDATA)>
+  <!ELEMENT Version (#PCDATA)>
+  <!ELEMENT Description (#PCDATA)>
+  <!ELEMENT PluginURL (#PCDATA)>
+  <!ELEMENT Support (#PCDATA)>
+  <!ELEMENT Category (#PCDATA)>
+  <!ELEMENT MinVer (#PCDATA)>
+  <!ELEMENT MaxVer (#PCDATA)>
+  <!ELEMENT Files (File+)>
+  <!ELEMENT File (URL, Name, Mode)>
+  <!ELEMENT URL (#PCDATA)>
+  <!ELEMENT Name (#PCDATA)>
+  <!ELEMENT Mode (#PCDATA)>
+]>
+
+<PLUGIN>
+  <Author>Uleepera (fork of dlandon)</Author>
+  <Version>2025.05.11</Version>
+  <Description>Open Files plugin to diagnose shutdown issues due to open file handles on the Unraid array.</Description>
+  <PluginURL>https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/open.files.plg</PluginURL>
+  <Support>https://github.com/Uleepera/unraid-open-files-fork</Support>
+  <Category>System</Category>
+  <MinVer>6.10.0</MinVer>
+  <MaxVer>6.99.9</MaxVer>
+
+  <Files>
+    <File>
+      <URL>https://github.com/Uleepera/unraid-open-files-fork/archive/refs/heads/main.zip</URL>
+      <Name>/tmp/open.files.zip</Name>
+      <Mode>0644</Mode>
+    </File>
+  </Files>
+</PLUGIN>
