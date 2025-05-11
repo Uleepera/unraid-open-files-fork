@@ -1,45 +1,34 @@
-<?xml version="1.0"?>
-<!DOCTYPE PLUGIN [
-  <!ELEMENT PLUGIN (Author, Version, Description, PluginURL, Support, Category, MinVer, MaxVer, Files, Install)>
-  <!ELEMENT Author (#PCDATA)>
-  <!ELEMENT Version (#PCDATA)>
-  <!ELEMENT Description (#PCDATA)>
-  <!ELEMENT PluginURL (#PCDATA)>
-  <!ELEMENT Support (#PCDATA)>
-  <!ELEMENT Category (#PCDATA)>
-  <!ELEMENT MinVer (#PCDATA)>
-  <!ELEMENT MaxVer (#PCDATA)>
-  <!ELEMENT Files (File+)>
-  <!ELEMENT File (URL, Name, Mode)>
-  <!ELEMENT URL (#PCDATA)>
-  <!ELEMENT Name (#PCDATA)>
-  <!ELEMENT Mode (#PCDATA)>
-  <!ELEMENT Install (#PCDATA)>
-]>
+<?xml version="1.0" encoding="utf-8"?>
+<PLUGIN name="open.files"
+        author="Uleepera"
+        version="2025.05.11"
+        min="6.10.0"
+        max="6.99.9"
+        category="System"
+        support="https://github.com/Uleepera/unraid-open-files-fork"
+        pluginURL="https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/open.files.plg"
+        icon="https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/icons/open_files.png">
 
-<PLUGIN>
-  <Author>Uleepera (fork of dlandon)</Author>
-  <Version>2025.05.11</Version>
-  <Description>Open Files plugin to diagnose shutdown issues due to open file handles on the Unraid array.</Description>
-  <PluginURL>https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/open.files.plg</PluginURL>
-  <Support>https://github.com/Uleepera/unraid-open-files-fork</Support>
-  <Category>System</Category>
-  <MinVer>6.10.0</MinVer>
-  <MaxVer>6.99.9</MaxVer>
+  <Description>
+    Open Files plugin to diagnose shutdown issues due to open file handles on the Unraid array.
+  </Description>
 
-  <Files>
-    <File>
-      <URL>https://github.com/Uleepera/unraid-open-files-fork/archive/refs/heads/main.zip</URL>
-      <Name>/tmp/open.files.zip</Name>
-      <Mode>0644</Mode>
-    </File>
-  </Files>
+  <Changes>
+    - Forked from original plugin by dlandon
+    - Added install.sh auto-deployment logic
+  </Changes>
 
-<Install>
-  cd /tmp
-  unzip -o open.files.zip -d open.files.extracted
-  cd open.files.extracted/unraid-open-files-fork-main
-  chmod +x install.sh
-  ./install.sh
-</Install>
+  <File Name="/tmp/open.files.zip">
+    <URL>https://github.com/Uleepera/unraid-open-files-fork/archive/refs/heads/main.zip</URL>
+    <MD5></MD5>
+  </File>
+
+  <Install>
+    cd /tmp
+    unzip -o open.files.zip -d open.files.extracted
+    cd open.files.extracted/unraid-open-files-fork-main
+    chmod +x install.sh
+    ./install.sh
+  </Install>
+
 </PLUGIN>
