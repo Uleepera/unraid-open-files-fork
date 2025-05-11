@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PLUGIN name="open.files"
         author="Uleepera"
-        version="2025.05.11a"
+        version="2025.05.11a-alt"
         min="6.10.0"
         max="6.99.9"
         category="System"
@@ -13,13 +13,12 @@
     Open Files plugin to diagnose shutdown issues due to open file handles on the Unraid array.
   </Description>
 
-  <File Name="/boot/config/plugins/open.files/open.files-2025.05.11a-x86_64-1.txz">
-    <URL>https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.11a/open.files-2025.05.11a-x86_64-1.txz</URL>
-    <MD5>4f816e3962477d54d0d597a5ce243632</MD5>
-  </File>
-
   <Install>
+    echo "===[Installing Open Files]==="
+    mkdir -p /boot/config/plugins/open.files
+    curl -L -o /boot/config/plugins/open.files/open.files-2025.05.11a-x86_64-1.txz https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.11a/open.files-2025.05.11a-x86_64-1.txz
     installpkg /boot/config/plugins/open.files/open.files-2025.05.11a-x86_64-1.txz
+    echo "===[Install complete]==="
   </Install>
 
   <Uninstall>
