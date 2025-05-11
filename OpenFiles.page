@@ -1,0 +1,88 @@
+Menu="SystemInformation"
+Type="xmenu"
+Title="Open Files"
+Icon="folder-open"
+Tabs="true"
+---
+<?PHP
+/* Copyright 2015-2025, Dan Landon.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License version 2,
+ * as published by the Free Software Foundation.
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ */
+
+/* Define our plugin name. */
+define('OPEN_FILES_PLUGIN', 'open.files');
+
+/* Define the docroot path. */
+if (!defined('DOCROOT')) {
+	define('DOCROOT', $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp');
+}
+?>
+
+<link type="text/css" rel="stylesheet" href="<?autov("/plugins/".OPEN_FILES_PLUGIN."/assets/style-$theme.css")?>">
+<link type="text/css" rel="stylesheet" href="<?autov("/plugins/".OPEN_FILES_PLUGIN."/assets/open-files.css")?>">
+
+<table class='tablesorter shift open-files' id='tblOpenFiles'>
+<thead><tr><th>_(Process)_</th><th>_(Process ID)_</th><th>_(Kill Process)_</th><th>_(Open)_</th><th>_(May prevent shutdown)_</th><th>_(File Name and Path)_</th></tr></thead>
+<tbody id="open-files">
+	<tr>
+		<td colspan='6'><div class='spinner'></div></td>
+	</tr>
+</tbody>
+</table>
+
+<p><strong>_(Notes)_:</strong></p>
+<li>_(An entry for 'bash' means you have a terminal session open with the working directory on the array)_.</li>
+<li>_(If 'smbd' is listed, it means that another computer has a samba share mounted)_. _(Files open by Samba usually won't prevent array shutdown)_.</li>
+
+:open_files_help_plug:
+> Click on the **Kill** button to stop the process that is holding the files open.
+> A dialog box will open showing you the progress of killing the process holding those files open.
+>
+> Click on **Process**, **Process ID**, **Files That May Prevent Shutdown**, or **File Name and Path** to change the sort order.
+:end
+
+<input type="button" value="_(Refresh)_" onclick="refresh()">
+<input type="button" value="_(Done)_" onclick="done()">
+
+<script>
+/* URL for Open Files PHP file. */
+const OFURL = '/plugins/<?php echo OPEN_FILES_PLUGIN;?>/include/OpenFiles.php';
+
+function refreshPage() {
+	$.post(OFURL, {
+		'action': 'open_files',
+	}, function (data) {
+		if (data) {
+			/* Fill the open files table. */
+			$('#open-files').html(data);
+
+			/* Set up the table sorter. */
+			$('#tblOpenFiles').tablesorter({headers:{2:{sorter:false},3:{sorter:false}}});
+		}
+	}, 'json');
+}
+
+$(function() {
+	<?if ($display['resize']):?>
+	function resize() {
+	  $('pre.up').height(Math.max(window.innerHeight-330,370)).show();
+	}
+
+	resize();
+	$(window).bind('resize',function(){resize();});
+	<?endif;?>
+
+	/* Check for a plugin update and show banner. */
+	if ( typeof caPluginUpdateCheck === "function" ) {
+		caPluginUpdateCheck("open.files.plg");
+	}
+});
+
+refreshPage();
+</script>
