@@ -15,6 +15,18 @@ The plugin adds a page to the **Tools** section in Unraid’s web UI. There, you
 
 ---
 
+## 📦 Installation
+
+*Note: This fork is not currently listed in Community Applications.*
+
+### Manual Installation
+
+1. Download or clone this repository.
+2. Copy the files to `/boot/config/plugins/open.files/` on your Unraid USB flash drive.
+3. Reboot your Unraid system or manually execute the plugin's init script if applicable.
+
+---
+
 ### 🧩 Plugin Installation (via URL)
 
 To install this plugin directly in Unraid:
