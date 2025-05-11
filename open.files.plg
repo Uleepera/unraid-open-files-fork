@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE PLUGIN [
-  <!ELEMENT PLUGIN (Author, Version, Description, PluginURL, Support, Category, MinVer, MaxVer, Files)>
+  <!ELEMENT PLUGIN (Author, Version, Description, PluginURL, Support, Category, MinVer, MaxVer, Files, Install)>
   <!ELEMENT Author (#PCDATA)>
   <!ELEMENT Version (#PCDATA)>
   <!ELEMENT Description (#PCDATA)>
@@ -14,6 +14,7 @@
   <!ELEMENT URL (#PCDATA)>
   <!ELEMENT Name (#PCDATA)>
   <!ELEMENT Mode (#PCDATA)>
+  <!ELEMENT Install (#PCDATA)>
 ]>
 
 <PLUGIN>
@@ -33,4 +34,12 @@
       <Mode>0644</Mode>
     </File>
   </Files>
+
+  <Install>
+    cd /tmp
+    unzip -o open.files.zip
+    cd unraid-open-files-fork-main
+    chmod +x install.sh
+    ./install.sh
+  </Install>
 </PLUGIN>
