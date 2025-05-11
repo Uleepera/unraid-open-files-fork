@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PLUGIN name="open.files"
+<PLUGIN name="open.files.debug"
         author="Uleepera"
-        version="2025.05.11a-debug"
+        version="2025.05.11-debug"
         min="6.10.0"
         max="6.99.9"
         category="System"
