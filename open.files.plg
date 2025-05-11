@@ -35,11 +35,11 @@
     </File>
   </Files>
 
-  <Install>
-    cd /tmp
-    unzip -o open.files.zip
-    cd unraid-open-files-fork-main
-    chmod +x install.sh
-    ./install.sh
-  </Install>
+<Install>
+  cd /tmp
+  unzip -o open.files.zip -d open.files.extracted
+  cd open.files.extracted/unraid-open-files-fork-main
+  chmod +x install.sh
+  ./install.sh
+</Install>
 </PLUGIN>
