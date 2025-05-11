@@ -1,29 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<PLUGIN name="open.files"
-        author="Uleepera"
-        version="2025.05.11b"
-        min="6.10.0"
-        max="6.99.9"
-        category="System"
-        support="https://github.com/Uleepera/unraid-open-files-fork"
-        pluginURL="https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/open.files.plg"
-        icon="https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/icons/openfiles.png">
+<PLUGIN>
+  <Author>Uleepera (fork of dlandon)</Author>
+  <Version>2025.05.11a</Version>
+  <Description>Open Files plugin to diagnose shutdown issues due to open file handles.</Description>
+  <PluginURL>https://github.com/Uleepera/unraid-open-files-fork</PluginURL>
+  <Support>https://forums.unraid.net/topic/xxxx-plugin-support-thread</Support>
+  <Category>System</Category>
+  <MinVer>6.10.0</MinVer>
+  <MaxVer>6.99.9</MaxVer>
 
-  <Description>
-    Open Files plugin to diagnose shutdown issues due to open file handles on the Unraid array.
-  </Description>
+  <Files>
+    <File>
+      <URL>https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.11a/open.files-2025.05.11a-x86_64-1.txz</URL>
+      <Name>/boot/config/plugins/open.files/open.files-2025.05.11a-x86_64-1.txz</Name>
+      <Mode>0644</Mode>
+    </File>
+  </Files>
 
-  <file>
-    <name>open.files-2025.05.11a-x86_64-1.txz</name>
-    <url>https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.11a/open.files-2025.05.11a-x86_64-1.txz</url>
-    <md5>4f816e3962477d54d0d597a5ce243632</md5>
-  </file>
-
-  <install>
-    installpkg open.files-2025.05.11a-x86_64-1.txz
-  </install>
-
-  <remove>
-    removepkg open.files
-  </remove>
+  <Install>
+    upgradepkg --install-new /boot/config/plugins/open.files/open.files-2025.05.11a-x86_64-1.txz
+  </Install>
 </PLUGIN>
