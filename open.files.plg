@@ -1,31 +1,28 @@
-<PLUGIN>
-  <Author>echo ">>> [DEBUG] Author tag read" >> /boot/open.files.debug.log && Uleepera (fork of dlandon)</Author>
-  <Version>echo ">>> [DEBUG] Version tag read" >> /boot/open.files.debug.log && 2025.05.11a</Version>
-  <Description>echo ">>> [DEBUG] Description tag read" >> /boot/open.files.debug.log && Open Files plugin</Description>
-  <PluginURL>https://github.com/Uleepera/unraid-open-files-fork</PluginURL>
-  <Support>https://forums.unraid.net/topic/xxxx-plugin-support-thread</Support>
-  <Category>System</Category>
-  <MinVer>6.10.0</MinVer>
-  <MaxVer>6.99.9</MaxVer>
+<?xml version="1.0" encoding="utf-8"?>
+<PLUGIN name="open.files" author="Uleepera (fork of dlandon)" version="2025.05.11a" min="6.10.0" max="6.99.9" category="System" pluginURL="https://github.com/Uleepera/unraid-open-files-fork" support="https://forums.unraid.net/topic/xxxx-plugin-support-thread">
+
+  <Description>
+    Open Files plugin to diagnose shutdown issues due to open file handles.
+  </Description>
 
   <Files>
     <File>
-      <URL>echo ">>> [DEBUG] File URL block triggered" >> /boot/open.files.debug.log && https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.11a/open.files-2025.05.11a-x86_64-1.txz</URL>
+      <URL>https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.11a/open.files-2025.05.11a-x86_64-1.txz</URL>
       <Name>/boot/config/plugins/open.files/open.files-2025.05.11a-x86_64-1.txz</Name>
       <Mode>0644</Mode>
     </File>
   </Files>
 
   <Install>
-    echo ">>> [DEBUG] Entering <Install> block" >> /boot/open.files.debug.log
-    echo ">>> [DEBUG] Running upgradepkg..." >> /boot/open.files.debug.log
+    echo "[DEBUG] Starting install of open.files plugin" >> /boot/open.files.debug.log
     upgradepkg --install-new /boot/config/plugins/open.files/open.files-2025.05.11a-x86_64-1.txz >> /boot/open.files.debug.log 2>&1
-    echo ">>> [DEBUG] <Install> block complete" >> /boot/open.files.debug.log
+    echo "[DEBUG] Install complete" >> /boot/open.files.debug.log
   </Install>
 
   <Remove>
-    echo ">>> [DEBUG] Entering <Remove> block" >> /boot/open.files.debug.log
+    echo "[DEBUG] Starting removal of open.files plugin" >> /boot/open.files.debug.log
     removepkg open.files >> /boot/open.files.debug.log 2>&1
-    echo ">>> [DEBUG] <Remove> block complete" >> /boot/open.files.debug.log
+    echo "[DEBUG] Removal complete" >> /boot/open.files.debug.log
   </Remove>
+
 </PLUGIN>
