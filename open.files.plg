@@ -1,7 +1,7 @@
 <PLUGIN>
-  <Author>Uleepera (fork of dlandon)</Author>
-  <Version>2025.05.11a</Version>
-  <Description>Open Files plugin to diagnose shutdown issues due to open file handles.</Description>
+  <Author>echo ">>> [DEBUG] Author tag read" >> /boot/open.files.debug.log && Uleepera (fork of dlandon)</Author>
+  <Version>echo ">>> [DEBUG] Version tag read" >> /boot/open.files.debug.log && 2025.05.11a</Version>
+  <Description>echo ">>> [DEBUG] Description tag read" >> /boot/open.files.debug.log && Open Files plugin</Description>
   <PluginURL>https://github.com/Uleepera/unraid-open-files-fork</PluginURL>
   <Support>https://forums.unraid.net/topic/xxxx-plugin-support-thread</Support>
   <Category>System</Category>
@@ -10,14 +10,22 @@
 
   <Files>
     <File>
-      <URL>https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.11a/open.files-2025.05.11a-x86_64-1.txz</URL>
-      <MD5>4f816e3962477d54d0d597a5ce243632</MD5>
-      <Name>open.files-2025.05.11a-x86_64-1.txz</Name>
+      <URL>echo ">>> [DEBUG] File URL block triggered" >> /boot/open.files.debug.log && https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.11a/open.files-2025.05.11a-x86_64-1.txz</URL>
+      <Name>/boot/config/plugins/open.files/open.files-2025.05.11a-x86_64-1.txz</Name>
       <Mode>0644</Mode>
     </File>
   </Files>
 
   <Install>
-    upgradepkg --install-new open.files-2025.05.11a-x86_64-1.txz
+    echo ">>> [DEBUG] Entering <Install> block" >> /boot/open.files.debug.log
+    echo ">>> [DEBUG] Running upgradepkg..." >> /boot/open.files.debug.log
+    upgradepkg --install-new /boot/config/plugins/open.files/open.files-2025.05.11a-x86_64-1.txz >> /boot/open.files.debug.log 2>&1
+    echo ">>> [DEBUG] <Install> block complete" >> /boot/open.files.debug.log
   </Install>
+
+  <Remove>
+    echo ">>> [DEBUG] Entering <Remove> block" >> /boot/open.files.debug.log
+    removepkg open.files >> /boot/open.files.debug.log 2>&1
+    echo ">>> [DEBUG] <Remove> block complete" >> /boot/open.files.debug.log
+  </Remove>
 </PLUGIN>
