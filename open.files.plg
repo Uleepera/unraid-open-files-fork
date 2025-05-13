@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PLUGIN name="open.files" author="Uleepera (fork of dlandon)" version="2025.05.11a" min="6.10.0" max="6.99.9" category="System" 
+<PLUGIN name="open.files" author="Uleepera (fork of dlandon)" version="2025.05.11a" min="6.10.0" max="6.99.9" category="System"
     support="https://forums.unraid.net/topic/xxxx-plugin-support-thread"
     pluginURL="https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/open.files.plg"
     icon="https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/icons/openfiles.png">
@@ -17,19 +17,20 @@ Open Files plugin to diagnose shutdown issues due to open file handles.
 </Files>
 
 <Install>
+<![CDATA[
   echo ">>> [DEBUG] Entering <Install> block" >> /boot/open.files.debug.log
-  echo ">>> [DEBUG] Step 1: Installing open.files-2025.05.11a-x86_64-1.txz..." >> /boot/open.files.debug.log
+  echo ">>> [DEBUG] Step 1: Installing ..." >> /boot/open.files.debug.log
   upgradepkg --install-new /boot/config/plugins/open.files/open.files-2025.05.11a-x86_64-1.txz >> /boot/open.files.debug.log 2>&1
-  echo ">>> [DEBUG] Step 2: Installation complete" >> /boot/open.files.debug.log
   echo ">>> [DEBUG] <Install> block complete" >> /boot/open.files.debug.log
+]]>
 </Install>
 
 <Remove>
+<![CDATA[
   echo ">>> [DEBUG] Entering <Remove> block" >> /boot/open.files.debug.log
-  echo ">>> [DEBUG] Step 1: Removing open.files..." >> /boot/open.files.debug.log
   removepkg open.files >> /boot/open.files.debug.log 2>&1
-  echo ">>> [DEBUG] Step 2: Removal complete" >> /boot/open.files.debug.log
   echo ">>> [DEBUG] <Remove> block complete" >> /boot/open.files.debug.log
+]]>
 </Remove>
 
 </PLUGIN>
