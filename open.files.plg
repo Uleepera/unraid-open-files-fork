@@ -11,12 +11,13 @@
   <Files>
     <File>
       <URL>https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.11a/open.files-2025.05.11a-x86_64-1.txz</URL>
-      <Name>/boot/config/plugins/open.files/open.files-2025.05.11a-x86_64-1.txz</Name>
+      <MD5>4f816e3962477d54d0d597a5ce243632</MD5>
+      <Name>open.files-2025.05.11a-x86_64-1.txz</Name>
       <Mode>0644</Mode>
     </File>
   </Files>
 
   <Install>
-    upgradepkg --install-new /boot/config/plugins/open.files/open.files-2025.05.11a-x86_64-1.txz
+    upgradepkg --install-new open.files-2025.05.11a-x86_64-1.txz
   </Install>
 </PLUGIN>
