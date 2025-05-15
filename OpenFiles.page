@@ -1,4 +1,4 @@
-Menu="SystemInformation"
+Menu="SystemInformation" 
 Type="xmenu"
 Title="Open Files"
 Icon="folder-open"
@@ -27,8 +27,25 @@ if (!defined('DOCROOT')) {
 <link type="text/css" rel="stylesheet" href="<?autov("/plugins/".OPEN_FILES_PLUGIN."/assets/style-$theme.css")?>">
 <link type="text/css" rel="stylesheet" href="<?autov("/plugins/".OPEN_FILES_PLUGIN."/assets/open-files.css")?>">
 
+<!-- Filter option -->
+<div style="margin-bottom: 10px;">
+  <label>
+    <input type="checkbox" id="filterSystemProcesses">
+    Hide system processes
+  </label>
+</div>
+
 <table class='tablesorter shift open-files' id='tblOpenFiles'>
-<thead><tr><th>_(Process)_</th><th>_(Process ID)_</th><th>_(Kill Process)_</th><th>_(Open)_</th><th>_(May prevent shutdown)_</th><th>_(File Name and Path)_</th></tr></thead>
+<thead>
+  <tr>
+    <th>_(Process)_</th>
+    <th>_(Process ID)_</th>
+    <th>_(Kill Process)_</th>
+    <th>_(Open)_</th>
+    <th>_(May prevent shutdown)_</th>
+    <th>_(File Name and Path)_</th>
+  </tr>
+</thead>
 <tbody id="open-files">
 	<tr>
 		<td colspan='6'><div class='spinner'></div></td>
@@ -47,22 +64,23 @@ if (!defined('DOCROOT')) {
 > Click on **Process**, **Process ID**, **Files That May Prevent Shutdown**, or **File Name and Path** to change the sort order.
 :end
 
-<input type="button" value="_(Refresh)_" onclick="refresh()">
+<input type="button" value="_(Refresh)_" onclick="refreshPage()">
 <input type="button" value="_(Done)_" onclick="done()">
 
 <script>
 /* URL for Open Files PHP file. */
 const OFURL = '/plugins/<?php echo OPEN_FILES_PLUGIN;?>/include/OpenFiles.php';
 
+/* Refresh the open files list */
 function refreshPage() {
+	const excludeSystem = document.getElementById('filterSystemProcesses').checked ? 1 : 0;
+
 	$.post(OFURL, {
 		'action': 'open_files',
+		'exclude_system': excludeSystem
 	}, function (data) {
 		if (data) {
-			/* Fill the open files table. */
 			$('#open-files').html(data);
-
-			/* Set up the table sorter. */
 			$('#tblOpenFiles').tablesorter({headers:{2:{sorter:false},3:{sorter:false}}});
 		}
 	}, 'json');
@@ -75,14 +93,18 @@ $(function() {
 	}
 
 	resize();
-	$(window).bind('resize',function(){resize();});
+	$(window).bind('resize', function() { resize(); });
 	<?endif;?>
 
-	/* Check for a plugin update and show banner. */
-	if ( typeof caPluginUpdateCheck === "function" ) {
+	// Wire up checkbox to trigger refresh
+	document.getElementById('filterSystemProcesses').addEventListener('change', refreshPage);
+
+	// Check for a plugin update
+	if (typeof caPluginUpdateCheck === "function") {
 		caPluginUpdateCheck("open.files.plg");
 	}
-});
 
-refreshPage();
+	// Initial data load
+	refreshPage();
+});
 </script>
