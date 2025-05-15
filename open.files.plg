@@ -12,7 +12,7 @@
         author="&author;"
         version="&version;"
         pluginURL="&pluginURL;"
-        icon="https://raw.githubusercontent.com/&github;/main/icons/openfiles.png"
+        icon="https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/icons/openfiles.png"
         min="6.10.0"
         max="6.99.9"
         category="System"
