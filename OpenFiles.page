@@ -1,8 +1,7 @@
-<link type="text/css" rel="stylesheet" href="<?autov('/plugins/open.files/assets/style-$theme.css')?>">
-<link type="text/css" rel="stylesheet" href="<?autov('/plugins/open.files/assets/open-files.css')?>">
+<link type="text/css" rel="stylesheet" href="<?autov('/plugins/open.files.plus/assets/style-$theme.css')?>">
+<link type="text/css" rel="stylesheet" href="<?autov('/plugins/open.files.plus/assets/open-files.css')?>">
 
-
-<h2>Process Filter Options</h2>
+<h2>Process Filter Options <span style="font-size: 0.7em; font-weight: normal;">(added in UI-Filtering branch)</span></h2>
 <div id="filterSection">
   <div class="filter-group">
     <label><input type="checkbox" class="group-toggle" data-group="system"> System Processes</label>
@@ -61,19 +60,29 @@
 <input type="button" value="Refresh" onclick="refreshPage()">
 <input type="button" value="Done" onclick="done()">
 
+<!-- Filtering feature introduced in custom fork -->
+<!-- GitHub: https://github.com/YOUR_USERNAME/unraid-open-files-fork/tree/UI-Filtering -->
 <script>
-const OFURL = '/plugins/open.files/include/OpenFiles.php';
+const OFURL = '/plugins/open.files.plus/include/OpenFiles.php';
 
 function refreshPage() {
   const selected = [];
   document.querySelectorAll('.proc-filter:checked').forEach(el => selected.push(el.value));
+
+  const groupMapping = {};
+  document.querySelectorAll('.proc-filter:checked').forEach(el => {
+    const group = el.closest('.filter-options').dataset.group;
+    if (!groupMapping[group]) groupMapping[group] = [];
+    groupMapping[group].push(el.value);
+  });
 
   fetch(OFURL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       action: 'open_files',
-      exclude_list: JSON.stringify(selected)
+      exclude_list: JSON.stringify(selected),
+      exclude_groups: JSON.stringify(groupMapping)
     })
   })
   .then(response => response.json())
@@ -84,6 +93,9 @@ function refreshPage() {
 
   localStorage.setItem('openFilesFilterList', JSON.stringify(selected));
 }
+
+// Once the backend is updated to read `exclude_list`, verify that it properly
+// handles custom process filtering from this POST request.
 
 window.addEventListener('DOMContentLoaded', () => {
   const saved = JSON.parse(localStorage.getItem('openFilesFilterList') || '[]');
