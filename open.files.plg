@@ -14,7 +14,7 @@
         pluginURL="&pluginURL;"
         icon="https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/icons/openfiles.png"
         min="6.10.0"
-        max="7.99.9"
+        max="6.99.9"
         category="System"
         support="https://forums.unraid.net/topic/190204-plugin-unraid-open-files-plugin-fork/">
 
