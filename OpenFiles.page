@@ -89,15 +89,23 @@ function refreshPage() {
 $(function() {
 	<?if ($display['resize']):?>
 	function resize() {
-	  $('pre.up').height(Math.max(window.innerHeight-330,370)).show();
+		$('pre.up').height(Math.max(window.innerHeight-330,370)).show();
 	}
-
 	resize();
 	$(window).bind('resize', function() { resize(); });
 	<?endif;?>
 
-	// Wire up checkbox to trigger refresh
-	document.getElementById('filterSystemProcesses').addEventListener('change', refreshPage);
+	// Restore checkbox state from localStorage
+	const saved = localStorage.getItem('hideSystemProcesses');
+	if (saved === '1') {
+		document.getElementById('filterSystemProcesses').checked = true;
+	}
+
+	// Save state and refresh on change
+	document.getElementById('filterSystemProcesses').addEventListener('change', function() {
+		localStorage.setItem('hideSystemProcesses', this.checked ? '1' : '0');
+		refreshPage();
+	});
 
 	// Check for a plugin update
 	if (typeof caPluginUpdateCheck === "function") {
