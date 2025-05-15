@@ -2,33 +2,42 @@
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "open.files">
   <!ENTITY author    "Uleepera (based on work by dlandon and originally BubbaQ)">
-  <!ENTITY version   "2025.05.11a">
+  <!ENTITY version   "2025.05.15-beta1">
   <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
   <!ENTITY github    "Uleepera/unraid-open-files-fork">
-  <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/main/&name;.plg">
+  <!ENTITY branch    "UI-Filtering">
+  <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/&branch;/&name;.plg">
 ]>
 
 <PLUGIN name="&name;"
         author="&author;"
         version="&version;"
         pluginURL="&pluginURL;"
-        icon="https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/icons/openfiles.png"
+        icon="https://raw.githubusercontent.com/&github;/&branch;/icons/openfiles.png"
         min="6.10.0"
         max="7.99.99"
         category="System"
         support="https://forums.unraid.net/topic/190204-plugin-unraid-open-files-plugin-fork/">
 
 <Description>
-Unraid Open Files Plugin (Fork)
+Unraid Open Files Plugin (Enhanced Version)
 
 This plugin shows any open files on the array that might prevent a clean shutdown.
-It installs a page in the "Tools" section to view processes that are holding files open on the array,
-helping to diagnose unclean shutdown issues. This fork preserves functionality from dlandon and BubbaQ's original plugin.
+It now includes a filtering UI to help reduce clutter and isolate specific process types
+(system, Unraid, Docker/VMs). A visual toggle system and persistent filter selections
+make this version easier to use at scale.
+
+Originally developed by BubbaQ and later maintained by dlandon. This release is
+authored by Uleepera with enhancements in the `UI-Filtering` branch.
 </Description>
 
 <CHANGES>
-###2025.05.11a
-- Initial release of the forked version.
+###2025.05.15-beta1
+- NEW: UI-based filtering system with process group categories (System, Unraid, VM/Docker)
+- NEW: Filtering state is saved across page reloads using localStorage
+- NEW: Fully modular CSS + maintainable markup
+- Cleaned up HTML table styling and removed legacy text artifacts
+- Compatible with Unraid 6.10–6.12 and future-proofed for 7.x
 </CHANGES>
 
 <FILE Name="/boot/config/plugins/&name;/&name;-&version;.txz" Run="upgradepkg --install-new">
