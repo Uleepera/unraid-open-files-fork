@@ -3,7 +3,6 @@
   <!ENTITY name      "open.files">
   <!ENTITY author    "Uleepera (based on work by dlandon and originally BubbaQ)">
   <!ENTITY version   "2025.05.11a">
-  <!ENTITY md5       "4f816e3962477d54d0d597a5ce243632">
   <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
   <!ENTITY github    "Uleepera/unraid-open-files-fork">
   <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/main/&name;.plg">
@@ -13,25 +12,29 @@
         author="&author;"
         version="&version;"
         pluginURL="&pluginURL;"
+        icon="https://raw.githubusercontent.com/&github;/main/icons/openfiles.png"
         min="6.10.0"
         max="6.99.9"
         category="System"
-        support="https://forums.unraid.net/topic/xxxx-plugin-support-thread"
-        icon="https://raw.githubusercontent.com/&github;/main/icons/openfiles.png">
+        support="https://forums.unraid.net/topic/xxxx-plugin-support-thread">
+
+<Description>
+Unraid Open Files Plugin (Fork)
+
+This plugin shows any open files on the array that might prevent a clean shutdown.
+It installs a page in the "Tools" section to view processes that are holding files open on the array,
+helping to diagnose unclean shutdown issues. This fork preserves functionality from dlandon and BubbaQ's original plugin.
+</Description>
 
 <CHANGES>
-### &version; - Forked Release
-- Forked and updated Open Files plugin.
-- Original by BubbaQ, maintained by dlandon, now continued by Uleepera.
+###2025.05.11a
+- Initial release of the forked version.
 </CHANGES>
 
-<!-- TXZ file install -->
 <FILE Name="/boot/config/plugins/&name;/&name;-&version;.txz" Run="upgradepkg --install-new">
   <URL>https://github.com/&github;/releases/download/v&version;/&name;-&version;-x86_64-1.txz</URL>
-  <MD5>&md5;</MD5>
 </FILE>
 
-<!-- Post-install script -->
 <FILE Run="/bin/bash">
   <INLINE>
     rm -f $(ls /boot/config/plugins/&name;/&name;*.txz | grep -v '&version;')
@@ -43,11 +46,10 @@
   </INLINE>
 </FILE>
 
-<!-- Remove logic -->
 <FILE Run="/bin/bash" Method="remove">
   <INLINE>
     echo "Removing Open Files plugin..."
-    removepkg &name;
+    removepkg /boot/config/plugins/&name;/&name;-&version;
     rm -rf &plugdir;
     rm -rf /boot/config/plugins/&name;
     echo "----------------------------------------------------"
