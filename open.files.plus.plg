@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE PLUGIN [
-  <!ENTITY name "open.files.plus">
+  <!ENTITY name      "open.files.plus">
   <!ENTITY author    "Uleepera (based on work by dlandon and originally BubbaQ)">
   <!ENTITY version   "2025.05.15-beta1">
   <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
@@ -13,31 +13,32 @@
         author="&author;"
         version="&version;"
         pluginURL="&pluginURL;"
-        icon="https://raw.githubusercontent.com/&github;/&branch;/icons/openfiles.png"
+        icon="https://raw.githubusercontent.com/&github;/main/icons/openfiles.png"
         min="6.10.0"
         max="7.99.99"
         category="System"
         support="https://forums.unraid.net/topic/190204-plugin-unraid-open-files-plugin-fork/">
 
 <Description>
-Unraid Open Files Plugin (Enhanced Version)
+🔍 **Open Files Plus** – Enhanced Plugin for Unraid
 
-This plugin shows any open files on the array that might prevent a clean shutdown.
-It now includes a filtering UI to help reduce clutter and isolate specific process types
-(system, Unraid, Docker/VMs). A visual toggle system and persistent filter selections
-make this version easier to use at scale.
+This plugin helps identify open files on the array that may prevent clean shutdowns.
 
-Originally developed by BubbaQ and later maintained by dlandon. This release is
-authored by Uleepera with enhancements in the `UI-Filtering` branch.
+✨ **New Features**:
+- UI-based filtering by process type (System / Unraid / Docker & VMs)
+- Persistent filters using localStorage
+- Modern, cleaner UI layout
+- Still supports "Kill Process" for stuck handles
+
+Originally by BubbaQ, maintained by dlandon, and now enhanced by Uleepera.
 </Description>
 
 <CHANGES>
-###2025.05.15-beta1
-- NEW: UI-based filtering system with process group categories (System, Unraid, VM/Docker)
-- NEW: Filtering state is saved across page reloads using localStorage
-- NEW: Fully modular CSS + maintainable markup
-- Cleaned up HTML table styling and removed legacy text artifacts
-- Compatible with Unraid 6.10–6.12 and future-proofed for 7.x
+### 2025.05.15-beta1
+- NEW: Filter processes by group using UI checkboxes
+- NEW: Save filter state across page reloads
+- REFACTORED: CSS moved to modular file, table layout improved
+- BACKEND: OpenFiles.php now supports `exclude_list` POST input
 </CHANGES>
 
 <FILE Name="/boot/config/plugins/&name;/&name;-&version;.txz" Run="upgradepkg --install-new">
@@ -48,7 +49,7 @@ authored by Uleepera with enhancements in the `UI-Filtering` branch.
   <INLINE>
     rm -f $(ls /boot/config/plugins/&name;/&name;*.txz | grep -v '&version;')
     echo "----------------------------------------------------"
-    echo " Open Files plugin installed"
+    echo " Open Files Plus plugin installed"
     echo " Version: &version;"
     echo "----------------------------------------------------"
     echo ""
@@ -57,12 +58,12 @@ authored by Uleepera with enhancements in the `UI-Filtering` branch.
 
 <FILE Run="/bin/bash" Method="remove">
   <INLINE>
-    echo "Removing Open Files plugin..."
+    echo "Removing Open Files Plus plugin..."
     removepkg /boot/config/plugins/&name;/&name;-&version;
     rm -rf &plugdir;
     rm -rf /boot/config/plugins/&name;
     echo "----------------------------------------------------"
-    echo "Open Files plugin &version; successfully removed."
+    echo "Open Files Plus plugin &version; successfully removed."
     echo "----------------------------------------------------"
   </INLINE>
 </FILE>
