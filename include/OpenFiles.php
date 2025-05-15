@@ -10,7 +10,7 @@
  */
 ?>
 
-<?
+<?php
 /* Define the docroot path. */
 if (!defined('DOCROOT')) {
 	define('DOCROOT', $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp');
@@ -25,14 +25,17 @@ require_once(DOCROOT."/webGui/include/Translations.php");
 
 switch ($_POST['action']) {
 	case 'open_files':
-		/* cd to /tmp or else lsof itself will show up as working dir on websserver home. */
-		$timeout	= 30;
-		$time		= -microtime(true); 
-		$res		= shell_exec("/usr/bin/timeout ".escapeshellarg($timeout)." "."cd /tmp;/usr/bin/lsof -F facn /mnt/* /dev/loop* /dev/md* 2>/dev/null");
-		$time		+= microtime(true);
+		$timeout = 30;
+		$time = -microtime(true);
+		$res = shell_exec("/usr/bin/timeout " . escapeshellarg($timeout) . " cd /tmp;/usr/bin/lsof -F facn /mnt/* /dev/loop* /dev/md* 2>/dev/null");
+		$time += microtime(true);
+
+		// Read checkbox filter from POST
+		$exclude_system = isset($_POST['exclude_system']) && $_POST['exclude_system'] == '1';
+		$excluded_procs = ['shfs', 'nfsd', 'systemd', 'rpcbind', 'kworker', 'udevd', 'udev', 'dockerd'];
 
 		if ($time < $timeout) {
-			$res1 = isset($res) ? explode("\n", $res) : array();
+			$res1 = isset($res) ? explode("\n", $res) : [];
 			$blocked = false;
 			$bcount = 0;
 			$process = 0;
@@ -40,11 +43,11 @@ switch ($_POST['action']) {
 			$return = "";
 
 			foreach ($res1 as $stg) {
-				$c		= substr($stg,0,1);
-				$var	= substr($stg,1);
+				$c = substr($stg, 0, 1);
+				$var = substr($stg, 1);
 
 				switch ($c) {
-					case "c" :
+					case "c":
 						$name = $var;
 						$prog[$process] = $name;
 						$count[$process] = 0;
@@ -52,57 +55,59 @@ switch ($_POST['action']) {
 						$pnum[$process] = $process;
 						break;
 
-					case "n" :
+					case "n":
 						$count[$process]++;
 						$flist[$process][$i++] = $var;
 						if ($cwd) {
-							$flist[$process][$i-1] .= " (working directory)";
+							$flist[$process][$i - 1] .= " (working directory)";
 						}
 						break;
 
-					case "a" :
+					case "a":
 						if ($var == "u" || $var == "w") {
-							$blocking[$process] ++;
+							$blocking[$process]++;
 							$blocked = true;
-							$bcount ++;
+							$bcount++;
 						}
 						break;
 
-					case "f" :
-						if ($var == "cwd" && $prog[$process] !='smbd') {
-							$blocking[$process] ++;
+					case "f":
+						if ($var == "cwd" && $prog[$process] != 'smbd') {
+							$blocking[$process]++;
 							$blocked = true;
-							$bcount ++;
+							$bcount++;
 							$cwd = true;
 						} else {
 							$cwd = false;
 						}
 						break;
 
-					case "p" :
+					case "p":
 						$process = $var;
 						$i = 0;
 						break;
 
-					default :
+					default:
 						break;
 				}
 			}
 
-			$bb="";
-			if ((isset($pnum)) && ($pnum)) {
+			if (!empty($pnum)) {
 				foreach ($pnum as $pp) {
-					$ss			= $flist[$pnum[$pp]][0];
-					$bb			= "<input title='"._('Enable Kill Button').".' type='checkbox' onclick='$(\"#kill_button{$pnum[$pp]}\").prop(\"disabled\",!this.checked);'>";
-					$bb			.= "<button class='kill-button' title='"._('Kill this Process holding files open').".' id='kill_button{$pnum[$pp]}' disabled onclick='openBox(\"/plugins/open.files/scripts/killprocess&arg1={$pnum[$pp]}\",\"Kill Process\",450,450,true)'>"._('Kill')."</button>";
-					$return		.= "<tr><td>$prog[$pp]</td><td>$pnum[$pp]</td><td>$bb</td><td>$count[$pp]</td><td>$blocking[$pp]</td>";
+					if ($exclude_system && in_array($prog[$pp], $excluded_procs)) continue;
 
-					$truncate	= 80;
-					$trim		= 40;
-					$return		.= "<td>";
-					foreach($flist[$pnum[$pp]] as $pname) {
+					$ss = $flist[$pnum[$pp]][0];
+					$bb = "<input title='" . _('Enable Kill Button') . "' type='checkbox' onclick='$(\"#kill_button{$pnum[$pp]}\").prop(\"disabled\",!this.checked);'>";
+					$bb .= "<button class='kill-button' title='" . _('Kill this Process holding files open') . "' id='kill_button{$pnum[$pp]}' disabled onclick='openBox(\"/plugins/open.files/scripts/killprocess&arg1={$pnum[$pp]}\",\"Kill Process\",450,450,true)'>" . _('Kill') . "</button>";
+
+					$return .= "<tr><td>{$prog[$pp]}</td><td>{$pnum[$pp]}</td><td>$bb</td><td>{$count[$pp]}</td><td>{$blocking[$pp]}</td>";
+
+					$truncate = 80;
+					$trim = 40;
+					$return .= "<td>";
+					foreach ($flist[$pnum[$pp]] as $pname) {
 						if (strlen($pname) > $truncate) {
-							$pname =substr($pname, 0, $trim)."<strong>...</strong>".substr($pname, strlen($pname)-($truncate-$trim));
+							$pname = substr($pname, 0, $trim) . "<strong>...</strong>" . substr($pname, -($truncate - $trim));
 						}
 						$return .= "$pname<br />";
 					}
@@ -110,17 +115,17 @@ switch ($_POST['action']) {
 				}
 			}
 
-			if ((!$return)) {
-				$return		= "<tr><td colspan='6' style='text-align:center'><em>"._('No open files')."</em></td></tr>";
+			if (empty($return)) {
+				$return = "<tr><td colspan='6' style='text-align:center'><em>" . _('No open files') . "</em></td></tr>";
 			}
 		} else {
-			$return		= "<tr><td colspan='6' style='text-align:center;'><em>"._('Command timed out')."! "._('Cannot get list of open files').".</em></td></tr>";
+			$return = "<tr><td colspan='6' style='text-align:center;'><em>" . _('Command timed out') . "! " . _('Cannot get list of open files') . ".</em></td></tr>";
 		}
 
 		echo json_encode($return);
 		break;
 
-		default:
-			break;
-	}
+	default:
+		break;
+}
 ?>
