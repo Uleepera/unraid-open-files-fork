@@ -11,16 +11,12 @@
 ?>
 
 <?php
-/* Define the docroot path. */
 if (!defined('DOCROOT')) {
 	define('DOCROOT', $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp');
 }
 
-/* Get the Unraid Wrappers and Helpers files. */
 require_once(DOCROOT."/webGui/include/Wrappers.php");
 require_once(DOCROOT."/webGui/include/Helpers.php");
-
-/* Get translations. */
 require_once(DOCROOT."/webGui/include/Translations.php");
 
 switch ($_POST['action']) {
@@ -30,16 +26,20 @@ switch ($_POST['action']) {
 		$res = shell_exec("/usr/bin/timeout " . escapeshellarg($timeout) . " cd /tmp;/usr/bin/lsof -F facn /mnt/* /dev/loop* /dev/md* 2>/dev/null");
 		$time += microtime(true);
 
-		// Read checkbox filter from POST
-		$exclude_system = isset($_POST['exclude_system']) && $_POST['exclude_system'] == '1';
-		$excluded_procs = ['shfs', 'nfsd', 'systemd', 'rpcbind', 'kworker', 'udevd', 'udev', 'dockerd'];
+		// Decode excluded process names from POST
+		$excluded_procs = [];
+		if (!empty($_POST['exclude_list'])) {
+			$decoded = json_decode($_POST['exclude_list'], true);
+			if (is_array($decoded)) {
+				$excluded_procs = array_map('trim', $decoded);
+			}
+		}
 
 		if ($time < $timeout) {
 			$res1 = isset($res) ? explode("\n", $res) : [];
 			$blocked = false;
 			$bcount = 0;
 			$process = 0;
-
 			$return = "";
 
 			foreach ($res1 as $stg) {
@@ -94,7 +94,7 @@ switch ($_POST['action']) {
 
 			if (!empty($pnum)) {
 				foreach ($pnum as $pp) {
-					if ($exclude_system && in_array($prog[$pp], $excluded_procs)) continue;
+					if (!empty($excluded_procs) && in_array($prog[$pp], $excluded_procs)) continue;
 
 					$ss = $flist[$pnum[$pp]][0];
 					$bb = "<input title='" . _('Enable Kill Button') . "' type='checkbox' onclick='$(\"#kill_button{$pnum[$pp]}\").prop(\"disabled\",!this.checked);'>";
