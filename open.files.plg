@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE PLUGIN [
-  <!ENTITY name      "open.files">
+  <!ENTITY name "open.files.plus">
   <!ENTITY author    "Uleepera (based on work by dlandon and originally BubbaQ)">
   <!ENTITY version   "2025.05.15-beta1">
   <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
