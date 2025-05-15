@@ -49,3 +49,9 @@ table.open-files td:last-child {
 button.kill-button:disabled {
   opacity: 0.5;
 }
+
+/* Hidden process filter group */
+.hidden-group {
+  display: none;
+  padding-left: 1em;
+}
