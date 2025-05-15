@@ -1,118 +1,113 @@
-Menu="SystemInformation" 
-Type="xmenu"
-Title="Open Files"
-Icon="folder-open"
-Tabs="true"
----
-<?PHP
-/* Copyright 2015-2025, Dan Landon.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License version 2,
- * as published by the Free Software Foundation.
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- */
+<link type="text/css" rel="stylesheet" href="<?autov('/plugins/open.files/assets/style-$theme.css')?>">
+<link type="text/css" rel="stylesheet" href="<?autov('/plugins/open.files/assets/open-files.css')?>">
 
-/* Define our plugin name. */
-define('OPEN_FILES_PLUGIN', 'open.files');
 
-/* Define the docroot path. */
-if (!defined('DOCROOT')) {
-	define('DOCROOT', $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp');
-}
-?>
+<h2>Process Filter Options</h2>
+<div id="filterSection">
+  <div class="filter-group">
+    <label><input type="checkbox" class="group-toggle" data-group="system"> System Processes</label>
+    <div class="filter-options hidden-group" data-group="system">
+      <label><input type="checkbox" class="proc-filter" value="shfs"> shfs</label><br>
+      <label><input type="checkbox" class="proc-filter" value="kworker"> kworker</label><br>
+      <label><input type="checkbox" class="proc-filter" value="systemd"> systemd</label>
+    </div>
+  </div>
 
-<link type="text/css" rel="stylesheet" href="<?autov("/plugins/".OPEN_FILES_PLUGIN."/assets/style-$theme.css")?>">
-<link type="text/css" rel="stylesheet" href="<?autov("/plugins/".OPEN_FILES_PLUGIN."/assets/open-files.css")?>">
+  <div class="filter-group">
+    <label><input type="checkbox" class="group-toggle" data-group="unraid"> Unraid Processes</label>
+    <div class="filter-options hidden-group" data-group="unraid">
+      <label><input type="checkbox" class="proc-filter" value="smbd"> smbd</label><br>
+      <label><input type="checkbox" class="proc-filter" value="nfsd"> nfsd</label><br>
+      <label><input type="checkbox" class="proc-filter" value="mdrecoveryd"> mdrecoveryd</label>
+    </div>
+  </div>
 
-<!-- Filter option -->
-<div style="margin-bottom: 10px;">
-  <label>
-    <input type="checkbox" id="filterSystemProcesses">
-    Hide system processes
-  </label>
+  <div class="filter-group">
+    <label><input type="checkbox" class="group-toggle" data-group="vm"> VM/Docker Processes</label>
+    <div class="filter-options hidden-group" data-group="vm">
+      <label><input type="checkbox" class="proc-filter" value="qemu"> qemu</label><br>
+      <label><input type="checkbox" class="proc-filter" value="libvirt"> libvirt</label><br>
+      <label><input type="checkbox" class="proc-filter" value="dockerd"> dockerd</label>
+    </div>
+  </div>
+
+  <p><button onclick="refreshPage()">Apply Filter</button></p>
 </div>
 
 <table class='tablesorter shift open-files' id='tblOpenFiles'>
 <thead>
   <tr>
-    <th>_(Process)_</th>
-    <th>_(Process ID)_</th>
-    <th>_(Kill Process)_</th>
-    <th>_(Open)_</th>
-    <th>_(May prevent shutdown)_</th>
-    <th>_(File Name and Path)_</th>
+    <th>Process</th>
+    <th>Process ID</th>
+    <th>Kill Process</th>
+    <th>Open</th>
+    <th>May Prevent Shutdown</th>
+    <th>File Name and Path</th>
   </tr>
 </thead>
 <tbody id="open-files">
-	<tr>
-		<td colspan='6'><div class='spinner'></div></td>
-	</tr>
+  <tr>
+    <td colspan='6'><div class='spinner'></div></td>
+  </tr>
 </tbody>
 </table>
 
-<p><strong>_(Notes)_:</strong></p>
-<li>_(An entry for 'bash' means you have a terminal session open with the working directory on the array)_.</li>
-<li>_(If 'smbd' is listed, it means that another computer has a samba share mounted)_. _(Files open by Samba usually won't prevent array shutdown)_.</li>
+<h3>Notes</h3>
+<ul>
+  <li>An entry for <code>bash</code> means you have a terminal session open with the working directory on the array.</li>
+  <li>If <code>smbd</code> is listed, it means that another computer has a Samba share mounted. Files open by Samba usually won't prevent array shutdown.</li>
+</ul>
 
-:open_files_help_plug:
-> Click on the **Kill** button to stop the process that is holding the files open.
-> A dialog box will open showing you the progress of killing the process holding those files open.
->
-> Click on **Process**, **Process ID**, **Files That May Prevent Shutdown**, or **File Name and Path** to change the sort order.
-:end
-
-<input type="button" value="_(Refresh)_" onclick="refreshPage()">
-<input type="button" value="_(Done)_" onclick="done()">
+<input type="button" value="Refresh" onclick="refreshPage()">
+<input type="button" value="Done" onclick="done()">
 
 <script>
-/* URL for Open Files PHP file. */
-const OFURL = '/plugins/<?php echo OPEN_FILES_PLUGIN;?>/include/OpenFiles.php';
+const OFURL = '/plugins/open.files/include/OpenFiles.php';
 
-/* Refresh the open files list */
 function refreshPage() {
-	const excludeSystem = document.getElementById('filterSystemProcesses').checked ? 1 : 0;
+  const selected = [];
+  document.querySelectorAll('.proc-filter:checked').forEach(el => selected.push(el.value));
 
-	$.post(OFURL, {
-		'action': 'open_files',
-		'exclude_system': excludeSystem
-	}, function (data) {
-		if (data) {
-			$('#open-files').html(data);
-			$('#tblOpenFiles').tablesorter({headers:{2:{sorter:false},3:{sorter:false}}});
-		}
-	}, 'json');
+  fetch(OFURL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      action: 'open_files',
+      exclude_list: JSON.stringify(selected)
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('open-files').innerHTML = data;
+    $('#tblOpenFiles').tablesorter({ headers: { 2: { sorter: false }, 3: { sorter: false } } });
+  });
+
+  localStorage.setItem('openFilesFilterList', JSON.stringify(selected));
 }
 
-$(function() {
-	<?if ($display['resize']):?>
-	function resize() {
-		$('pre.up').height(Math.max(window.innerHeight-330,370)).show();
-	}
-	resize();
-	$(window).bind('resize', function() { resize(); });
-	<?endif;?>
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = JSON.parse(localStorage.getItem('openFilesFilterList') || '[]');
 
-	// Restore checkbox state from localStorage
-	const saved = localStorage.getItem('hideSystemProcesses');
-	if (saved === '1') {
-		document.getElementById('filterSystemProcesses').checked = true;
-	}
+  document.querySelectorAll('.proc-filter').forEach(el => {
+    if (saved.includes(el.value)) el.checked = true;
+  });
 
-	// Save state and refresh on change
-	document.getElementById('filterSystemProcesses').addEventListener('change', function() {
-		localStorage.setItem('hideSystemProcesses', this.checked ? '1' : '0');
-		refreshPage();
-	});
+  document.querySelectorAll('.group-toggle').forEach(toggle => {
+    const group = toggle.dataset.group;
+    const hasSaved = Array.from(document.querySelectorAll(`.filter-options[data-group="${group}"] .proc-filter`)).some(el => saved.includes(el.value));
 
-	// Check for a plugin update
-	if (typeof caPluginUpdateCheck === "function") {
-		caPluginUpdateCheck("open.files.plg");
-	}
+    toggle.addEventListener('change', () => {
+      const visible = toggle.checked;
+      const container = document.querySelector(`.filter-options[data-group="${group}"]`);
+      container.style.display = visible ? 'block' : 'none';
+    });
 
-	// Initial data load
-	refreshPage();
+    if (hasSaved) {
+      toggle.checked = true;
+      document.querySelector(`.filter-options[data-group="${group}"]`).style.display = 'block';
+    }
+  });
+
+  refreshPage();
 });
 </script>
