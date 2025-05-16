@@ -41,8 +41,8 @@ Originally by BubbaQ, maintained by dlandon, and now enhanced by Uleepera.
 - BACKEND: OpenFiles.php now supports `exclude_list` POST input
 </CHANGES>
 
-<FILE Name="/boot/config/plugins/&name;/&name;-&version;.txz" Run="upgradepkg --install-new">
-  <URL>https://github.com/&github;/releases/download/v&version;/&name;-&version;-x86_64-1.txz</URL>
+<FILE Name="/boot/config/plugins/open.files.plus/open.files.plus-2025.05.15-beta1.txz" Run="upgradepkg --install-new">
+  <URL>https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.15-beta1/open.files.plus-2025.05.15-beta1.txz</URL>
 </FILE>
 
 <FILE Run="/bin/bash">
