@@ -1,65 +1,74 @@
-# Unraid Open Files Plugin (Fork)
+# Open Files Plus (Unraid Plugin)
 
-This is a preserved and forked version of the original **Open Files** plugin for [Unraid](https://unraid.net), originally developed by **dlandon**. This tool is useful for diagnosing array shutdown issues caused by open files.
-
----
-
-## 🧩 What It Does
-
-This plugin shows any open files on the array that might prevent a clean shutdown.  
-The plugin adds a page to the **Tools** section in Unraid’s web UI. There, you can:
-
-- View which files are open and what processes are holding them.
-- Stop all array processes to attempt a clean shutdown.
-- Troubleshoot what is blocking an array from unmounting properly.
+**Open Files Plus** is an enhanced version of the original Open Files plugin for [Unraid](https://unraid.net), originally developed by **BubbaQ** and maintained by **dlandon**. This version introduces a cleaner UI, persistent filters, and process grouping to make identifying shutdown-blocking files easier.
 
 ---
 
-## 📦 Installation
+## 🔍 What This Plugin Does
 
-*Note: This fork is not currently listed in Community Applications.*
-
-### Manual Installation
-
-1. Download or clone this repository.
-2. Copy the files to `/boot/config/plugins/open.files/` on your Unraid USB flash drive.
-3. Reboot your Unraid system or manually execute the plugin's init script if applicable.
+- Lists processes that have open files on the array (`/mnt`, `/dev/md*`, etc.)
+- Highlights which ones might prevent a clean shutdown
+- Lets you kill a process directly from the web UI
+- Groups common processes into categories: **System**, **Unraid**, and **VM/Docker**
+- Supports persistent filtering using browser localStorage
 
 ---
 
-### 🧩 Plugin Installation (via URL)
+## 📦 Installation (Manual URL Method)
 
-To install this plugin directly in Unraid:
+This plugin is not listed in Community Applications (CA). To install it manually:
 
-1. Go to the **Plugins** tab.
+1. Open Unraid and go to the **Plugins** tab.
 2. Click **Install Plugin**.
-3. Paste the following URL into the install field:  
-   https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/open.files.plg
+3. Paste the following URL:
+```
+https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/open.files.plus.plg
+```
 4. Click **Install**.
 
----
-
-## 📁 File Overview
-
-- `assets/`, `icons/`, `include/`, `scripts/` – Supporting files
-- `OpenFiles.page`, `SystemInformation.page` – Web UI pages
-- `README.md` – This documentation
 
 ---
 
-## ⚖️ License
+## 📁 Plugin Structure
 
-This plugin is distributed under the **GNU General Public License v2.0**. See the [LICENSE](LICENSE) file for details.
+open.files.plus/
+├── assets/ # CSS and theme support
+├── icons/ # Plugin icon
+├── include/ # Backend PHP
+├── scripts/ # Kill script
+├── OpenFilesPlus.page
+├── open.files.plus.plg
+├── README.md
+├── CHANGELOG.md
+
+---
+
+## 🧠 Why Use This Over the Original?
+
+| Feature                          | Original | Open Files Plus |
+|----------------------------------|----------|-----------------|
+| Shows open files and PIDs        | ✅        | ✅            |
+| Kill button in UI                | ✅        | ✅            |
+| Filter by process group          | ❌        | ✅            |
+| Save filters between sessions    | ❌        | ✅            |
+| Improved table layout            | ❌        | ✅            |
+
+---
+
+## 🔧 Configuration & Filtering
+
+You can expand process groups to show common system daemons, VM tools, and Unraid services. These filters help you focus only on the types of processes you care about.
 
 ---
 
 ## 🙏 Credits
 
-Original plugin by **dlandon**  
-Fork maintained by **Uleepera**
+- Original concept: **BubbaQ**
+- Long-term maintenance: **dlandon**
+- Current fork & UI updates: **Uleepera**
 
 ---
 
-## 💡 Notes
+## ⚖ License
 
-This plugin is preserved for utility and archival purposes. If development continues, versioning and .plg packaging will be added.
+This project is licensed under the [GNU GPL v2.0](LICENSE).
