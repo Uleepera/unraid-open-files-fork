@@ -26,19 +26,29 @@ Open Files Plus is an enhanced version of the Open Files plugin that helps ident
 2025.05.15-beta1 - Initial release with UI filtering enhancements.
 </CHANGES>
 
-<FILE Name="/boot/config/plugins/&name;/open-files-plus-2025.05.15-beta1-x86_64-1.txz" Run="upgradepkg --install-new">
+<FILE Name="/boot/config/plugins/&name;/open.files.plus-2025.05.15-beta1.txz" Run="upgradepkg --install-new">
   <URL>https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.15-beta1/open.files.plus-2025.05.15-beta1.txz</URL>
 </FILE>
 
 <FILE Run="/bin/bash">
   <INLINE>
-    echo "Installing Open Files Plus"
+    rm -f $(ls /boot/config/plugins/&name;/open.files.plus*.txz | grep -v '&version;')
+    echo "----------------------------------------------------"
+    echo " Open Files Plus plugin installed"
+    echo " Version: &version;"
+    echo "----------------------------------------------------"
   </INLINE>
 </FILE>
 
 <FILE Run="/bin/bash" Method="remove">
   <INLINE>
-    echo "Removing Open Files Plus"
+    echo "Removing Open Files Plus..."
+    removepkg /boot/config/plugins/&name;/open.files.plus-2025.05.15-beta1.txz
+    rm -rf &plugdir;
+    rm -rf /boot/config/plugins/&name;
+    echo "----------------------------------------------------"
+    echo "Open Files Plus plugin &version; successfully removed."
+    echo "----------------------------------------------------"
   </INLINE>
 </FILE>
 
