@@ -1,3 +1,10 @@
+Menu="SystemInformation"
+Type="xmenu"
+Title="Open Files Plus"
+Icon="folder-open"
+Tabs="false"
+---
+
 <link type="text/css" rel="stylesheet" href="<?autov('/plugins/open.files.plus/assets/style-$theme.css')?>">
 <link type="text/css" rel="stylesheet" href="<?autov('/plugins/open.files.plus/assets/open-files.css')?>">
 
@@ -60,8 +67,6 @@
 <input type="button" value="Refresh" onclick="refreshPage()">
 <input type="button" value="Done" onclick="done()">
 
-<!-- Filtering feature introduced in custom fork -->
-<!-- GitHub: https://github.com/YOUR_USERNAME/unraid-open-files-fork/tree/UI-Filtering -->
 <script>
 const OFURL = '/plugins/open.files.plus/include/OpenFiles.php';
 
@@ -93,9 +98,6 @@ function refreshPage() {
 
   localStorage.setItem('openFilesFilterList', JSON.stringify(selected));
 }
-
-// Once the backend is updated to read `exclude_list`, verify that it properly
-// handles custom process filtering from this POST request.
 
 window.addEventListener('DOMContentLoaded', () => {
   const saved = JSON.parse(localStorage.getItem('openFilesFilterList') || '[]');
