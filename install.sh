@@ -1,34 +1,41 @@
 #!/bin/bash
+set -eux  # Exit on error, undefined var, and echo each command
 
 PLUGIN="open.files.plus"
-PLUGIN_DIR="/usr/local/emhttp/plugins/$PLUGIN"
+PLUGIN_DIR="/usr/local/emhttp/plugins/${PLUGIN}"
+BOOT_DIR="/boot/config/plugins/${PLUGIN}"
+CWD="$(pwd)"
 
-echo "[INSTALL.SH] Starting Open Files Plus installation"
-echo "[INSTALL.SH] Target install directory: $PLUGIN_DIR"
+echo "[INSTALL] Starting Open Files Plus install script..."
+echo "[INSTALL] Current working directory: $CWD"
 
-# Ensure the plugin directory exists
-mkdir -p "$PLUGIN_DIR"
-echo "[INSTALL.SH] Created plugin directory (if missing)"
+# Ensure plugin target directory exists
+if [ ! -d "$PLUGIN_DIR" ]; then
+  echo "[INSTALL] Creating plugin directory: $PLUGIN_DIR"
+  mkdir -p "$PLUGIN_DIR"
+else
+  echo "[INSTALL] Plugin directory already exists: $PLUGIN_DIR"
+fi
 
-# Debug: Show current working directory and its contents
-echo "[INSTALL.SH] Current directory: $(pwd)"
-echo "[INSTALL.SH] Directory contents:"
-ls -lah
+# List contents before copying
+echo "[INSTALL] Contents before copy:"
+ls -lAh "$CWD"
 
-# Copy assets
-echo "[INSTALL.SH] Copying files to $PLUGIN_DIR..."
-cp -vR assets icons include scripts *.page *.md LICENSE "$PLUGIN_DIR"
+# Copy files
+cp -v -R "$CWD/assets" "$PLUGIN_DIR/"
+cp -v -R "$CWD/icons" "$PLUGIN_DIR/"
+cp -v -R "$CWD/include" "$PLUGIN_DIR/"
+cp -v -R "$CWD/scripts" "$PLUGIN_DIR/"
 
-# Optional: Check for required files
-echo "[INSTALL.SH] Verifying required files..."
-REQUIRED_FILES=("OpenFilesPlus.page" "include/OpenFilesPlus.php")
-for file in "${REQUIRED_FILES[@]}"; do
-  if [[ ! -f "$file" && ! -f "./$file" ]]; then
-    echo "[INSTALL.SH][ERROR] Missing required file: $file"
-    exit 1
+for f in "$CWD"/*.page "$CWD"/*.md "$CWD/LICENSE"; do
+  if [ -f "$f" ]; then
+    cp -v "$f" "$PLUGIN_DIR/"
   fi
 done
 
-# Confirm completion
-echo "[INSTALL.SH] Plugin installation complete."
+# Confirm copy result
+echo "[INSTALL] Final contents of plugin directory:"
+ls -lAh "$PLUGIN_DIR"
+
+echo "[INSTALL] Open Files Plus plugin installed successfully."
 exit 0
