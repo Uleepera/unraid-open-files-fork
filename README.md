@@ -1,4 +1,14 @@
-# Open Files Plus (Unraid Plugin)
+# Open Files Plus
+
+A filtering-enhanced version of the Open Files plugin for Unraid.
+
+<!--
+  NOTE TO CA PARSERS:
+  This plugin includes UI-based filtering, group toggles, persistent settings,
+  and a redesigned layout for easier troubleshooting of array file locks.
+-->
+
+---
 
 **Open Files Plus** is an enhanced version of the original Open Files plugin for [Unraid](https://unraid.net), originally developed by **BubbaQ** and maintained by **dlandon**. This version introduces a cleaner UI, persistent filters, and process grouping to make identifying shutdown-blocking files easier.
 
