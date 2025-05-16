@@ -32,7 +32,16 @@ Open Files Plus is an enhanced version of the Open Files plugin that helps ident
 
 <FILE Run="/bin/bash">
   <INLINE>
+    echo "[PLUGIN INSTALL] Cleaning up old txz packages..."
     rm -f $(ls /boot/config/plugins/&name;/open.files.plus*.txz | grep -v '&version;')
+
+    echo "[PLUGIN INSTALL] Creating plugin directory if missing..."
+    mkdir -p &plugdir;
+
+    echo "[PLUGIN INSTALL] Listing plugin directory contents:"
+    ls -l /boot/config/plugins/&name;
+
+    echo "[PLUGIN INSTALL] Installation script complete"
     echo "----------------------------------------------------"
     echo " Open Files Plus plugin installed"
     echo " Version: &version;"
@@ -42,10 +51,14 @@ Open Files Plus is an enhanced version of the Open Files plugin that helps ident
 
 <FILE Run="/bin/bash" Method="remove">
   <INLINE>
-    echo "Removing Open Files Plus..."
+    echo "[PLUGIN REMOVE] Starting removal of Open Files Plus plugin..."
+    echo "[PLUGIN REMOVE] Removing package..."
     removepkg /boot/config/plugins/&name;/open.files.plus-2025.05.15-beta1.txz
+
+    echo "[PLUGIN REMOVE] Removing plugin runtime files..."
     rm -rf &plugdir;
     rm -rf /boot/config/plugins/&name;
+
     echo "----------------------------------------------------"
     echo "Open Files Plus plugin &version; successfully removed."
     echo "----------------------------------------------------"
