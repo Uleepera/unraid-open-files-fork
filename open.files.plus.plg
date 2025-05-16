@@ -20,34 +20,27 @@
         support="https://forums.unraid.net/topic/190204-plugin-unraid-open-files-plugin-fork/">
 
 <Description>
-🔍 **Open Files Plus** – Enhanced Plugin for Unraid
+Open Files Plus is an enhanced version of the original plugin that identifies open files on the array that may prevent clean shutdowns.
 
-This plugin helps identify open files on the array that may prevent clean shutdowns.
-
-✨ **New Features**:
-- UI-based filtering by process type (System / Unraid / Docker & VMs)
-- Persistent filters using localStorage
-- Modern, cleaner UI layout
-- Still supports "Kill Process" for stuck handles
-
-Originally by BubbaQ, maintained by dlandon, and now enhanced by Uleepera.
+New features include a UI-based process filter, persistent settings using localStorage, and a modernized layout. 
+Originally developed by BubbaQ and maintained by dlandon, this version is further improved by Uleepera.
 </Description>
 
 <CHANGES>
 ### 2025.05.15-beta1
-- NEW: Filter processes by group using UI checkboxes
-- NEW: Save filter state across page reloads
-- REFACTORED: CSS moved to modular file, table layout improved
-- BACKEND: OpenFiles.php now supports `exclude_list` POST input
+- UI filtering for system, Unraid, and Docker/VM processes
+- Persistent filter state saved in browser
+- Modular CSS and layout improvements
+- Backend now supports JSON-based exclusion filtering
 </CHANGES>
 
-<FILE Name="/boot/config/plugins/open.files.plus/open.files.plus-2025.05.15-beta1.txz" Run="upgradepkg --install-new">
-  <URL>https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.15-beta1/open.files.plus-2025.05.15-beta1.txz</URL>
+<FILE Name="/boot/config/plugins/&name;/open-files-plus-2025.05.15-beta1-x86_64-1.txz" Run="upgradepkg --install-new">
+  <URL>https://github.com/Uleepera/unraid-open-files-fork/releases/download/v2025.05.15-beta1/open-files-plus-2025.05.15-beta1-x86_64-1.txz</URL>
 </FILE>
 
 <FILE Run="/bin/bash">
   <INLINE>
-    rm -f $(ls /boot/config/plugins/&name;/&name;*.txz | grep -v '&version;')
+    rm -f $(ls /boot/config/plugins/&name;/open-files-plus*.txz | grep -v '&version;')
     echo "----------------------------------------------------"
     echo " Open Files Plus plugin installed"
     echo " Version: &version;"
@@ -59,7 +52,7 @@ Originally by BubbaQ, maintained by dlandon, and now enhanced by Uleepera.
 <FILE Run="/bin/bash" Method="remove">
   <INLINE>
     echo "Removing Open Files Plus plugin..."
-    removepkg /boot/config/plugins/&name;/&name;-&version;
+    removepkg /boot/config/plugins/&name;/open-files-plus-*&version;*
     rm -rf &plugdir;
     rm -rf /boot/config/plugins/&name;
     echo "----------------------------------------------------"
