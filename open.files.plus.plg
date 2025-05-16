@@ -1,37 +1,29 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE PLUGIN [
   <!ENTITY name      "open.files.plus">
-  <!ENTITY author    "Uleepera (based on work by dlandon and originally BubbaQ)">
+  <!ENTITY author    "Uleepera">
   <!ENTITY version   "2025.05.15-beta1">
   <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
   <!ENTITY github    "Uleepera/unraid-open-files-fork">
-  <!ENTITY branch    "UI-Filtering">
-  <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/&branch;/&name;.plg">
+  <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/UI-Filtering/&name;.plg">
 ]>
 
 <PLUGIN name="&name;"
         author="&author;"
         version="&version;"
         pluginURL="&pluginURL;"
-        icon="https://raw.githubusercontent.com/&github;/main/icons/openfiles.png"
+        icon="https://raw.githubusercontent.com/Uleepera/unraid-open-files-fork/main/icons/openfiles.png"
         min="6.10.0"
         max="7.99.99"
         category="System"
         support="https://forums.unraid.net/topic/190204-plugin-unraid-open-files-plugin-fork/">
 
 <Description>
-Open Files Plus is an enhanced version of the original plugin that identifies open files on the array that may prevent clean shutdowns.
-
-New features include a UI-based process filter, persistent settings using localStorage, and a modernized layout. 
-Originally developed by BubbaQ and maintained by dlandon, this version is further improved by Uleepera.
+Open Files Plus is an enhanced version of the Open Files plugin that helps identify which processes are holding files open on the array.
 </Description>
 
 <CHANGES>
-### 2025.05.15-beta1
-- UI filtering for system, Unraid, and Docker/VM processes
-- Persistent filter state saved in browser
-- Modular CSS and layout improvements
-- Backend now supports JSON-based exclusion filtering
+2025.05.15-beta1 - Initial release with UI filtering enhancements.
 </CHANGES>
 
 <FILE Name="/boot/config/plugins/&name;/open-files-plus-2025.05.15-beta1-x86_64-1.txz" Run="upgradepkg --install-new">
@@ -40,24 +32,13 @@ Originally developed by BubbaQ and maintained by dlandon, this version is furthe
 
 <FILE Run="/bin/bash">
   <INLINE>
-    rm -f $(ls /boot/config/plugins/&name;/open-files-plus*.txz | grep -v '&version;')
-    echo "----------------------------------------------------"
-    echo " Open Files Plus plugin installed"
-    echo " Version: &version;"
-    echo "----------------------------------------------------"
-    echo ""
+    echo "Installing Open Files Plus"
   </INLINE>
 </FILE>
 
 <FILE Run="/bin/bash" Method="remove">
   <INLINE>
-    echo "Removing Open Files Plus plugin..."
-    removepkg /boot/config/plugins/&name;/open-files-plus-*&version;*
-    rm -rf &plugdir;
-    rm -rf /boot/config/plugins/&name;
-    echo "----------------------------------------------------"
-    echo "Open Files Plus plugin &version; successfully removed."
-    echo "----------------------------------------------------"
+    echo "Removing Open Files Plus"
   </INLINE>
 </FILE>
 
