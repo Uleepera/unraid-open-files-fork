@@ -68,7 +68,7 @@ Tabs="false"
 <input type="button" value="Done" onclick="done()">
 
 <script>
-const OFURL = '/plugins/open.files.plus/include/OpenFiles.php';
+const OFURL = '/plugins/open.files.plus/include/OpenFilesPlus.php';
 
 function refreshPage() {
   const selected = [];
