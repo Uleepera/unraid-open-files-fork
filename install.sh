@@ -3,25 +3,32 @@
 PLUGIN="open.files.plus"
 PLUGIN_DIR="/usr/local/emhttp/plugins/$PLUGIN"
 
-echo "[Open Files Plus Installer] Installing to: $PLUGIN_DIR"
+echo "[INSTALL.SH] Starting Open Files Plus installation"
+echo "[INSTALL.SH] Target install directory: $PLUGIN_DIR"
 
-# Ensure this script is executable
-chmod +x "$(realpath "$0")"
-
-# Create the plugin destination directory
+# Ensure the plugin directory exists
 mkdir -p "$PLUGIN_DIR"
+echo "[INSTALL.SH] Created plugin directory (if missing)"
 
-# Print working directory and contents for debug
-echo "[Open Files Plus Installer] Current directory: $(pwd)"
-echo "[Open Files Plus Installer] Contents:"
+# Debug: Show current working directory and its contents
+echo "[INSTALL.SH] Current directory: $(pwd)"
+echo "[INSTALL.SH] Directory contents:"
 ls -lah
 
-# Copy plugin assets
-cp -R assets icons include scripts *.page *.md LICENSE "$PLUGIN_DIR"
+# Copy assets
+echo "[INSTALL.SH] Copying files to $PLUGIN_DIR..."
+cp -vR assets icons include scripts *.page *.md LICENSE "$PLUGIN_DIR"
 
-# Create symlink so it shows up under Tools tab
-ln -sf "$PLUGIN_DIR/OpenFilesPlus.page" "$PLUGIN_DIR/SystemInformation.page"
-echo "[Open Files Plus Installer] Symlink created: SystemInformation.page → OpenFilesPlus.page"
+# Optional: Check for required files
+echo "[INSTALL.SH] Verifying required files..."
+REQUIRED_FILES=("OpenFilesPlus.page" "include/OpenFilesPlus.php")
+for file in "${REQUIRED_FILES[@]}"; do
+  if [[ ! -f "$file" && ! -f "./$file" ]]; then
+    echo "[INSTALL.SH][ERROR] Missing required file: $file"
+    exit 1
+  fi
+done
 
-echo "[Open Files Plus Installer] Copy complete."
+# Confirm completion
+echo "[INSTALL.SH] Plugin installation complete."
 exit 0
